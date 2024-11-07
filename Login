@@ -1,0 +1,271 @@
+from tkinter import *
+from tkinter import ttk
+from tkinter import messagebox
+from tkinter import filedialog
+from PIL import Image, ImageTk
+
+Root = Tk()
+Color1 = "#2D9BF0"
+Lorem = "Lorem ipsum dolor sit amet consectetur adipiscing elit, accumsan faucibus porta purus aenean inceptos, praesent fusce orci feugiat velit dui. Morbi felis a tempus sagittis donec diam platea cursus eu blandit dictum, ad sapien integer aptent imperdiet mi dignissim convallis facilisis purus praesent, nisl cubilia id magna mauris hendrerit massa eros libero mattis. Leo placerat morbi ut lacus sollicitudin fusce luctus maecenas, nisl elementum mus dapibus penatibus potenti ultrices conubia nascetur, taciti habitant dis hendrerit est donec posuere."
+
+datasPrueba = [
+        ("Nombre 1", "Valor 1", "Descripción 1", "Descripcion "),
+        ("Nombre 1", "Valor 1", "Descripción 1", "Descripcion "),
+        ("Nombre 1", "Valor 1", "Descripción 1", "Descripcion "),
+        ("Nombre 1", "Valor 1", "Descripción 1", "Descripcion "),
+        ("Nombre 1", "Valor 1", "Descripción 1", "Descripcion "),
+        ("Nombre 1", "Valor 1", "Descripción 1", "Descripcion "),
+        ("Nombre 1", "Valor 1", "Descripción 1", "Descripcion ")
+    ]
+
+def InfoTree(tree, data):
+    # Limpiar el treeview antes de agregar nuevos elementos
+    for row in tree.get_children():
+        tree.delete(row)
+    
+    # Agregar cada fila de datos al Treeview
+    for row in data:
+        tree.insert("", "end", values=row)
+
+def LoginVerification(User, Password):
+    if(TRUE and TRUE):
+        messagebox.showinfo("Inicio Exitoso", "aqui se debe de pasar de pagina")
+        VentanaPrincipal()
+    else:
+        messagebox.showerror("Inicio Fallido","Usuario o contraseña incorrecta!")
+
+def LoginWindow():
+
+    # Crear la ventana principal
+
+    Root.title("Inicio de sesión")
+    Root.geometry("900x500")  
+    Root.resizable(False, False)
+    Root.grid_columnconfigure(0, weight=1)
+    Root.grid_columnconfigure(1, weight=1)
+    Root.grid_rowconfigure(0, weight=1)
+
+    # Frames laterales
+    FrameLeft = Frame(Root, bg=Color1)
+    FrameLeft.grid(row=0, column=0, sticky="nsew")
+    FrameRight = Frame(Root, bg="white")
+    FrameRight.grid(row=0, column=1, sticky="nsew")
+
+    # Frame izquierdo configuracion
+    imageIcon = Image.open("Icon.png")
+    imageIcon = imageIcon.resize((150, 150))
+    photoIcon = ImageTk.PhotoImage(imageIcon)
+
+    LabelIcon = Label(FrameLeft, image=photoIcon, bg=Color1)
+    LabelIcon.pack(pady=20)
+    LabelIconText = Label(FrameLeft, text=Lorem, wraplength=300, bg=Color1, fg="White", font=("Arial", 10), justify="center")
+    LabelIconText.pack(pady=20)
+
+    # Frame derecho configuracion
+    image = Image.open("ProfileIcon.png")
+    image = image.resize((150, 150))
+    photo = ImageTk.PhotoImage(image)
+
+    LabelImage = Label(FrameRight, image=photo, bg="white")
+    LabelImage.pack(pady=10)
+    LabelImageText = Label(FrameRight, text="Inicio de sesión", bg="white", font=("Arial", 18))
+    LabelImageText.pack(pady=10)
+
+    # Elementos
+    EntryUser = Entry(FrameRight, font=("Arial", 12))
+    EntryUser.pack(pady=5, padx= 20, fill="x")
+    EntryUser.insert(0, "Ingrese su usuario")
+
+    EntryPassword = Entry(FrameRight, font=("Arial", 12), show="*")
+    EntryPassword.pack(pady=5, padx= 20, fill="x")
+    EntryPassword.insert(0, "Ingrese su contraseña")
+
+    CheckBox = Checkbutton(FrameRight, text="Mostrar Contraseña")
+    CheckBox.pack()
+
+    BtnIngresar = Button(FrameRight, text="Ingresar", bg="#FF7F50", fg="white", font=("Arial", 12), padx=10, pady=5, command= lambda: LoginVerification(EntryUser.get(), EntryPassword.get()))
+    BtnIngresar.pack(pady=20)
+    Root.mainloop()
+
+def VentanaPrincipal():
+
+    ventanaPrincipal = Toplevel()
+    ventanaPrincipal.title("Registro de Mascotas")
+
+    # Pestañas de la aplicacion
+    tab_control = ttk.Notebook(ventanaPrincipal)
+    tab1 = Frame(tab_control)
+    tab2 = Frame(tab_control)
+    tab3 = Frame(tab_control)
+    tab_control.add(tab1, text='Registrar')
+    tab_control.add(tab2, text='Buscar')
+    tab_control.add(tab3, text='Generar')
+    tab_control.pack(expand=1, fill='both')
+
+    #---------------------------- Frames de la pestaña registro------------------------------------------------
+    frameRegistro = LabelFrame(tab1, text="Registro")
+    frameRegistro.pack(fill="both", expand=True, padx=10, pady=10)
+
+    # Etiquetas y campos de entrada
+    labelNombre = Label(frameRegistro, text="Nombre Mascota")
+    labelNombre.grid(column=0, row=0, sticky='W', padx=10, pady=10)
+    entryNombre = Entry(frameRegistro)
+    entryNombre.grid(column=1, row=0, sticky='EW', padx=10)
+
+    labelRaza = Label(frameRegistro, text="Raza")
+    labelRaza.grid(column=0, row=1, sticky='W', padx=10, pady=10)
+    entryRaza = Entry(frameRegistro)
+    entryRaza.grid(column=1, row=1, sticky='EW', padx=10)
+
+    labelAlergias = Label(frameRegistro, text="Alergias")
+    labelAlergias.grid(column=0, row=2, sticky='W', padx=10, pady=10)
+    entryAlergias = Entry(frameRegistro)
+    entryAlergias.grid(column=1, row=2, sticky='EW', padx=10)
+
+    labelContacto = Label(frameRegistro, text="Correo de contacto")
+    labelContacto.grid(column=0, row=3, sticky='WN', padx=10, pady=10)
+    entryContacto = Entry(frameRegistro)
+    entryContacto.grid(column=1, row=3, sticky='EWN', padx=10)
+
+
+    labelVacunas = Label(frameRegistro, text="Vacunas administradas:")
+    labelVacunas.grid(column=2, row=0, sticky='W', padx=10, pady=10)
+
+    # LISTA DE CHECKBUTTON PARA LAS VACUNAS
+    cbRa = Checkbutton(frameRegistro, text="Rabia")
+    cbRa.grid(column=2, row= 1, sticky="W")
+    cbMo = Checkbutton(frameRegistro, text="Moquillo")
+    cbMo.grid(column=2, row= 2, sticky="W")
+    cbLe = Checkbutton(frameRegistro, text="Leucemia Felina")
+    cbLe.grid(column=2, row= 3, sticky="WN")
+    cbRi = Checkbutton(frameRegistro, text="Rinotraqueitis y Calicivirus")
+    cbRi.grid(column=3, row= 1, sticky="W")
+
+    labelOtras = Label(frameRegistro, text="Otras (especifique)")
+    labelOtras.grid(column=3, row= 2, sticky="W")
+    textVacunas = Text(frameRegistro, height=5, width=25)
+    textVacunas.grid(column=3, row= 3, sticky="W")
+
+    # BOTONES DE ACCION
+    frameBotones = Frame(tab1)
+    frameBotones.pack()
+
+    btnRegistrar = Button(frameBotones, text="Registrar", width=20, height=3, bg="green")
+    btnRegistrar.grid(column=0, row=0, padx=15)
+    btnEliminar = Button(frameBotones, text="Eliminar", width=20, height=3, bg="red")
+    btnEliminar.grid(column=1, row=0, padx=15)
+    btnIngresar = Button(frameBotones, text="Ver Info", width=20, height=3, bg="gray", command= lambda: InfoWindow())
+    btnIngresar.grid(column=2, row=0, padx=15)
+
+
+    # tabla para mostrar la información registrada
+    frame_tabla = Frame(tab1)
+    frame_tabla.pack(fill="both", expand=True, padx=10, pady=10)
+    tabla = ttk.Treeview(frame_tabla, columns=('Nombre', 'Edad', 'Raza', 'ID'), show='headings')
+    tabla.heading('Nombre', text='Nombre Mascota')
+    tabla.heading('Raza', text='Raza')
+    tabla.heading('Raza', text='Alergias')
+    tabla.heading('ID', text='ID')
+    tabla.pack(fill="both", expand=True)
+    InfoTree(tabla, datasPrueba)
+
+    # Configurar el comportamiento de redimensionamiento
+    for child in frameRegistro.winfo_children():
+        child.grid_configure(padx=5, pady=5)
+    ventanaPrincipal.grid_columnconfigure(1, weight=1)
+
+    Root.deiconify()
+
+    #---------------------------- Frames de la pestaña registro------------------------------------------------
+
+def InfoWindow():
+    InfoWindow = Toplevel()
+    InfoWindow.title("Información de la Mascota")
+    InfoWindow.geometry("900x500")
+    InfoWindow.resizable(False, False)
+
+    MainFrame = Frame(InfoWindow)
+    MainFrame.pack(fill='both', expand=True)
+
+    Header = Label(MainFrame, text="Información de la mascota", bg="#2D9BF0", font=("Arial", 24), pady=10)
+    Header.grid(row=0, column=0, columnspan=3, sticky='ew')
+
+    LeftFrame = Frame(MainFrame)
+    LeftFrame.grid(row=1, column=0, sticky='nsew', padx=10, pady=10)
+
+    NameLabel = Label(LeftFrame, text="Kevin Alberto Medina Cardenas", font=("Arial", 18))
+    NameLabel.pack(pady=5)
+
+    IconSeñor = Image.open("ProfileIcon.png")
+    IconSeñor = IconSeñor.resize((100, 100), Image.LANCZOS)
+    IconSeñor = ImageTk.PhotoImage(IconSeñor)
+
+    ImageLabel = Label(LeftFrame, image=IconSeñor, bg="lightgray")
+    ImageLabel.image = IconSeñor
+    ImageLabel.pack(pady=10, anchor='center')
+
+    for i, (LabelText, entry_var) in enumerate([("Dueño", "Kevin Alberto Medina Cardenas"), ("Domicilio", "05 de mayo")]):
+        frame = Frame(LeftFrame)
+        frame.pack(pady=5, anchor='w')
+
+        pencil_image = Image.open("pencil.jpg")
+        pencil_image = pencil_image.resize((20, 20), Image.LANCZOS)
+        pencil_icon = ImageTk.PhotoImage(pencil_image)
+
+        icon_label = Label(frame, image=pencil_icon)
+        icon_label.image = pencil_icon
+        icon_label.pack(side=LEFT, padx=5)
+
+        label = Label(frame, text=LabelText)
+        label.pack(side=LEFT)
+
+        entry = Entry(frame, width=30)
+        entry.insert(0, entry_var)
+        entry.pack(side=LEFT, padx=5)
+
+    Separator = Frame(MainFrame, width=2, bg="black")
+    Separator.grid(row=1, column=1, sticky='ns', padx=5)
+
+    RightFrame = Frame(MainFrame)
+    RightFrame.grid(row=1, column=2, sticky='nsew', padx=10, pady=10)
+
+    LabelVaccines = Label(RightFrame, text="Vacunas Administradas")
+    LabelVaccines.grid(row=0, column=0, columnspan=2, sticky='w')
+
+    Vacunas = [
+        ("Rabia", "placeholder"),
+        ("Parvovirus", "placeholder"),
+        ("Moquillo", "placeholder"),
+        ("Hepatitis", "placeholder"),
+    ]
+
+    for index, (vac, placeholder) in enumerate(Vacunas):
+        Checkbutton(RightFrame, text=vac, variable=IntVar()).grid(row=index + 1, column=0, sticky='w', pady=2)
+        Checkbutton(RightFrame, text=placeholder, variable=IntVar()).grid(row=index + 1, column=1, sticky='w', pady=2)
+
+    entryOtrosNose = Entry(RightFrame, width=30)
+    entryOtrosNose.grid(row=len(Vacunas) + 1, column=1, sticky='w', padx=5)
+    entryOtrosNose.insert(0, "Otros")
+
+    LabelAllergies = Label(RightFrame, text="Alergias")
+    LabelAllergies.grid(row=len(Vacunas) + 2, column=0, sticky='w', pady=(20, 0))
+    TextAllergies = Text(RightFrame, height=5, width=30)
+    TextAllergies.grid(row=len(Vacunas) + 3, column=0, sticky='ew', padx=5)
+    TextAllergies.insert(END, "Aquí se especifican las alergias")
+
+    LabelConditions = Label(RightFrame, text="Padecimientos")
+    LabelConditions.grid(row=len(Vacunas) + 2, column=1, sticky='w', pady=(20, 0))
+    TextConditions = Text(RightFrame, height=5, width=30)
+    TextConditions.grid(row=len(Vacunas) + 3, column=1, sticky='ew', padx=5)
+    TextConditions.insert(END, "Aquí se especifican los padecimientos")
+
+    RightFrame.columnconfigure(0, weight=1)
+    RightFrame.columnconfigure(1, weight=1)
+
+    MainFrame.columnconfigure(0, weight=1)
+    MainFrame.rowconfigure(1, weight=1)
+
+    InfoWindow.mainloop()
+
+
+LoginWindow()
