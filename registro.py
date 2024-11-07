@@ -5,6 +5,7 @@ from tkinter import filedialog
 import customtkinter
 from PIL import Image, ImageTk
 import pygame
+from bd import bd
 
 class RegistroApp:
 
@@ -27,6 +28,7 @@ class RegistroApp:
         self.sonidos = ["cat.mp3", "rugido.mp3", "rugido.mp3", "rugido.mp3", 
                         "rugido.mp3", "rugido.mp3", "rugido.mp3", "rugido.mp3"]
         self.profile = "imagenes/ProfileIcon.png"
+        self.currentImage = ""
 
         # Llamada a función de configuración de la interfaz
         self.Register()
@@ -40,9 +42,18 @@ class RegistroApp:
     def Confirmacion(self):
         confirmacion = messagebox.askyesno("Guardar cambios", "Estas seguro que la informacion es correcta")
         if confirmacion:
+            self.GuardarInfo()
             self.root.destroy()
         else:
             self.current_index -= 1
+
+    def GuardarInfo(self):
+            base = bd()
+            base.AgregarMascota(self.entryName.get(), self.entryPet.get(), self.entryAddress.get(), "prueba", "prueba", "prueba", self.currentImage)
+            data = base.ObtenerInfoMascotas()
+            print(data)
+            base.Cerrar()
+
 
     def update_indicator(self, canvas):
         for i, circle in enumerate(self.circles):
@@ -123,14 +134,14 @@ class RegistroApp:
         btnSelector = Button(self.tab1, image=self.photo2, width=50, height=50, command=lambda: Selector())
         btnSelector.place(x=50, y=70)
 
-        entryName = customtkinter.CTkEntry(self.tab1_mid, placeholder_text="Nombre del dueño", height=50)
-        entryName.pack(pady=15, padx=60, fill="x")
+        self.entryName = customtkinter.CTkEntry(self.tab1_mid, placeholder_text="Nombre del dueño", height=50)
+        self.entryName.pack(pady=15, padx=60, fill="x")
 
-        entryPet = customtkinter.CTkEntry(self.tab1_mid, placeholder_text="Nombre de la mascota", height=50)
-        entryPet.pack(pady=15, padx=60, fill="x")
+        self.entryPet = customtkinter.CTkEntry(self.tab1_mid, placeholder_text="Nombre de la mascota", height=50)
+        self.entryPet.pack(pady=15, padx=60, fill="x")
 
-        entryAddress = customtkinter.CTkEntry(self.tab1_mid, placeholder_text="Domicilio", height=50)
-        entryAddress.pack(pady=15, padx=60, fill="x")
+        self.entryAddress = customtkinter.CTkEntry(self.tab1_mid, placeholder_text="Domicilio", height=50)
+        self.entryAddress.pack(pady=15, padx=60, fill="x")
 
         # VACUNAS ADMINISTRADAS
         imageVacunas = Image.open("imagenes/vacunas_icon.png")
@@ -221,12 +232,12 @@ class RegistroApp:
             circle = canvas.create_oval(x, 10, x + 20, 30, fill=self.inactive_color, outline="black")
             self.circles.append(circle)
 
-
         self.update_indicator(canvas)
 
         def CambiarPerfil(num, window, label_image):
             global profile
             global sonidos
+            self.currentImage = self.imagenes[num]
             profile = self.imagenes[num]
             image = Image.open("imagenes/" + profile)
             image = image.resize((130, 130))
