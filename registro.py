@@ -26,7 +26,7 @@ class RegistroApp:
                          "conejo_icon.jpg", "lagarto_icon.jpg", "tortuga_icon.jpg", "ProfileIcon.png"]
         self.sonidos = ["cat.mp3", "rugido.mp3", "rugido.mp3", "rugido.mp3", 
                         "rugido.mp3", "rugido.mp3", "rugido.mp3", "rugido.mp3"]
-        self.profile = "ProfileIcon.png"
+        self.profile = "imagenes/ProfileIcon.png"
 
         # Llamada a función de configuración de la interfaz
         self.Register()
@@ -113,7 +113,7 @@ class RegistroApp:
         image = Image.open(self.profile)
         image = image.resize((130, 130))
         photo = ImageTk.PhotoImage(image)
-        self.image2 = Image.open("pencil.jpg")
+        self.image2 = Image.open("imagenes/pencil.jpg")
         self.image2 = self.image2.resize((50, 50))
         self.photo2 = ImageTk.PhotoImage(self.image2) 
 
@@ -133,7 +133,7 @@ class RegistroApp:
         entryAddress.pack(pady=15, padx=60, fill="x")
 
         # VACUNAS ADMINISTRADAS
-        imageVacunas = Image.open("vacunas_icon.png")
+        imageVacunas = Image.open("imagenes/vacunas_icon.png")
         imageVacunas = imageVacunas.resize((130, 130))
         photoVacunas = ImageTk.PhotoImage(imageVacunas)
 
@@ -172,7 +172,7 @@ class RegistroApp:
 
         # ALERGIAS-----------------------------------------------
 
-        imageAlergias = Image.open("alergias_icon.png")
+        imageAlergias = Image.open("imagenes/alergias_icon.png")
         imageAlergias = imageAlergias.resize((130, 130))
         photoAlergias = ImageTk.PhotoImage(imageAlergias)
 
@@ -183,7 +183,7 @@ class RegistroApp:
 
         # PADECIMIENTOS------------------------------------------
 
-        imagePadecimientos = Image.open("padecimientos_icon.png")
+        imagePadecimientos = Image.open("imagenes/padecimientos_icon.png")
         imagePadecimientos = imagePadecimientos.resize((130, 130))
         photoPadecimientos = ImageTk.PhotoImage(imagePadecimientos)
 
@@ -227,14 +227,12 @@ class RegistroApp:
         def CambiarPerfil(num, window, label_image):
             global profile
             global sonidos
-            pygame.mixer.music.load(self.sonidos[num])
             profile = self.imagenes[num]
-            image = Image.open(profile)
+            image = Image.open("imagenes/" + profile)
             image = image.resize((130, 130))
             photo = ImageTk.PhotoImage(image)
             label_image.configure(image=photo)
             label_image.image = photo  #
-            pygame.mixer.music.play()
             window.destroy()
 
         def Selector():
@@ -246,33 +244,37 @@ class RegistroApp:
             frameImagenes.pack(fill="both")
 
             # iconos ---------------------------------------------
-            image_icon = Image.open("gato_icon.jpg")
+            image_icon = Image.open("imagenes/gato_icon.jpg")
             image_icon = image_icon.resize((80, 80))
             icon_gato = ImageTk.PhotoImage(image_icon)
 
-            image_icon = Image.open("perro_icon.jpg")
+            image_icon = Image.open("imagenes/perro_icon.jpg")
             image_icon = image_icon.resize((80, 80))
             icon_perro = ImageTk.PhotoImage(image_icon)
 
-            image_icon = Image.open("nutria_icon.jpg")
+            image_icon = Image.open("imagenes/nutria_icon.jpg")
             image_icon = image_icon.resize((80, 80))
             icon_nutria = ImageTk.PhotoImage(image_icon)
 
-            image_icon = Image.open("tortuga_icon.jpg")
+            image_icon = Image.open("imagenes/tortuga_icon.jpg")
             image_icon = image_icon.resize((80, 80))
             icon_tortuga = ImageTk.PhotoImage(image_icon)
 
-            image_icon = Image.open("lagarto_icon.jpg")
+            image_icon = Image.open("imagenes/lagarto_icon.jpg")
             image_icon = image_icon.resize((80, 80))
             icon_iguana = ImageTk.PhotoImage(image_icon)
 
-            image_icon = Image.open("conejo_icon.jpg")
+            image_icon = Image.open("imagenes/conejo_icon.jpg")
             image_icon = image_icon.resize((80, 80))
             icon_conejo = ImageTk.PhotoImage(image_icon)
 
-            image_icon = Image.open("hamster_icon.jpg")
+            image_icon = Image.open("imagenes/hamster_icon.jpg")
             image_icon = image_icon.resize((80, 80))
             icon_hamster = ImageTk.PhotoImage(image_icon)
+
+            image_icon = Image.open("imagenes/tortuga_icon.jpg")
+            image_icon = image_icon.resize((80, 80))
+            icon_tortuga = ImageTk.PhotoImage(image_icon) 
 
             btn1 = customtkinter.CTkButton(frameImagenes, image=icon_gato, width=80, height=80, text="", command=lambda: CambiarPerfil(0, selector, LabelImageProfile)).grid(column=0, row=0)
             btn2 = customtkinter.CTkButton(frameImagenes, image=icon_perro, width=80, height=80, text="", command=lambda: CambiarPerfil(1, selector, LabelImageProfile)).grid(column=1, row=0, padx=10, pady=10)
