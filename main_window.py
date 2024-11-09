@@ -8,7 +8,7 @@ from registro import RegistroApp
 ###--------------------------------------------Ventana Principal------------------------------------------###
 class main_window(ctk.CTk):
     
-    def puto24():
+    def puto25():
         pass
 
     def daniel_tonto(self):
