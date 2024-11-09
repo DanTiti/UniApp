@@ -10,9 +10,6 @@ class main_window(ctk.CTk):
 
     def daniel_tonto(self):
         print("pendejo")
-    
-    def kevin_tonto(self):
-        print("tonto")
 
     def abrir_registro(self):
         app = Toplevel(ventana)
