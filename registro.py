@@ -30,7 +30,6 @@ class RegistroApp:
         self.profile = "imagenes/ProfileIcon.png"
         self.currentImage = ""
 
-        # Llamada a función de configuración de la interfaz
         self.Register()
 
     def VerificarPosicion(self, btn):
@@ -49,6 +48,7 @@ class RegistroApp:
 
     def GuardarInfo(self):
             base = bd()
+            
             base.AgregarMascota(self.entryName.get(), self.entryPet.get(), self.entryAddress.get(), "prueba", "prueba", "prueba", self.currentImage)
             data = base.ObtenerInfoMascotas()
             print(data)
@@ -61,16 +61,26 @@ class RegistroApp:
             canvas.itemconfig(circle, fill=color)
 
     def next_tab(self, canvas):
-        self.current_index = (self.current_index + 1)
-        if(self.current_index >= 4):
-            self.Confirmacion()
+        if self.Validar():
+            self.current_index = (self.current_index + 1)
+            if(self.current_index >= 4):
+                self.Confirmacion()
+            else:
+                self.update_indicator(canvas)
         else:
-            self.update_indicator(canvas)
+            aviso = messagebox.showinfo("Rellenar campos", "Tiene que rellenar los campos obligatorios")
+
 
     def previous_tab(self, canvas):
         if(self.current_index != 0):
             self.current_index = (self.current_index - 1)
             self.update_indicator(canvas)
+    
+    def Validar(self):
+        if  self.entryName.get() != "" and self.entryPet.get() != "" and self.entryAddress.get() != "":
+            return True
+        else:
+            return False
 
     def Register(self):
         self.root.rowconfigure(0, weight=1)
@@ -160,26 +170,26 @@ class RegistroApp:
         self.tab4_mid.columnconfigure(0, weight=1)
         self.tab4_mid.columnconfigure(1, weight=1)
 
-        cb_T2M1 = customtkinter.CTkCheckBox(self.tab2_mid, text="Rabia").grid(column=0, row=0, pady=15, padx=10)
-        cb_T2M2 = customtkinter.CTkCheckBox(self.tab2_mid, text="Rabia").grid(column=0, row=1, pady=15, padx=10)
-        cb_T2M3 = customtkinter.CTkCheckBox(self.tab2_mid, text="Rabia").grid(column=0, row=2, pady=15, padx=10)
-        cb_T2M4 = customtkinter.CTkCheckBox(self.tab2_mid, text="Rabia").grid(column=1, row=0, pady=15, padx=10)
-        cb_T2M5 = customtkinter.CTkCheckBox(self.tab2_mid, text="Rabia").grid(column=1, row=1, pady=15, padx=10)
-        entryT2 = customtkinter.CTkEntry(self.tab2_mid, placeholder_text="Otras (especifique)", height=50, width=250).grid(column=0, columnspan=2, row=3, pady=15, padx=10)
+        self.cb_T2M1 = customtkinter.CTkCheckBox(self.tab2_mid, text="Rabia", onvalue="Rabia").grid(column=0, row=0, pady=15, padx=10)
+        self.cb_T2M2 = customtkinter.CTkCheckBox(self.tab2_mid, text="Rabia", onvalue="Rabia").grid(column=0, row=1, pady=15, padx=10)
+        self.cb_T2M3 = customtkinter.CTkCheckBox(self.tab2_mid, text="Rabia", onvalue="Rabia").grid(column=0, row=2, pady=15, padx=10)
+        self.cb_T2M4 = customtkinter.CTkCheckBox(self.tab2_mid, text="Rabia", onvalue="Rabia").grid(column=1, row=0, pady=15, padx=10)
+        self.cb_T2M5 = customtkinter.CTkCheckBox(self.tab2_mid, text="Rabia", onvalue="Rabia").grid(column=1, row=1, pady=15, padx=10)
+        self.entryT2 = customtkinter.CTkEntry(self.tab2_mid, placeholder_text="Otras (especifique)", height=50, width=250).grid(column=0, columnspan=2, row=3, pady=15, padx=10)
 
-        cb_T3M1 = customtkinter.CTkCheckBox(self.tab3_mid, text="Rabia").grid(column=0, row=0, pady=15, padx=10)
-        cb_T3M2 = customtkinter.CTkCheckBox(self.tab3_mid, text="Rabia").grid(column=0, row=1, pady=15, padx=10)
-        cb_T3M3 = customtkinter.CTkCheckBox(self.tab3_mid, text="Rabia").grid(column=0, row=2, pady=15, padx=10)
-        cb_T3M4 = customtkinter.CTkCheckBox(self.tab3_mid, text="Rabia").grid(column=1, row=0, pady=15, padx=10)
-        cb_T3M5 = customtkinter.CTkCheckBox(self.tab3_mid, text="Rabia").grid(column=1, row=1, pady=15, padx=10)
-        entryT2 = customtkinter.CTkEntry(self.tab3_mid, placeholder_text="Otras (especifique)", height=50, width=250).grid(column=0, columnspan=2, row=3, pady=15, padx=10)
+        self.cb_T3M1 = customtkinter.CTkCheckBox(self.tab3_mid, text="Rabia", onvalue="Rabia").grid(column=0, row=0, pady=15, padx=10)
+        self.cb_T3M2 = customtkinter.CTkCheckBox(self.tab3_mid, text="Rabia", onvalue="Rabia").grid(column=0, row=1, pady=15, padx=10)
+        self.cb_T3M3 = customtkinter.CTkCheckBox(self.tab3_mid, text="Rabia", onvalue="Rabia").grid(column=0, row=2, pady=15, padx=10)
+        self.cb_T3M4 = customtkinter.CTkCheckBox(self.tab3_mid, text="Rabia", onvalue="Rabia").grid(column=1, row=0, pady=15, padx=10)
+        self.cb_T3M5 = customtkinter.CTkCheckBox(self.tab3_mid, text="Rabia", onvalue="Rabia").grid(column=1, row=1, pady=15, padx=10)
+        self.entryT2 = customtkinter.CTkEntry(self.tab3_mid, placeholder_text="Otras (especifique)", height=50, width=250).grid(column=0, columnspan=2, row=3, pady=15, padx=10)
 
-        cb_T4M1 = customtkinter.CTkCheckBox(self.tab4_mid, text="Rabia").grid(column=0, row=0, pady=15, padx=10)
-        cb_T4M2 = customtkinter.CTkCheckBox(self.tab4_mid, text="Rabia").grid(column=0, row=1, pady=15, padx=10)
-        cb_T4M3 = customtkinter.CTkCheckBox(self.tab4_mid, text="Rabia").grid(column=0, row=2, pady=15, padx=10)
-        cb_T4M4 = customtkinter.CTkCheckBox(self.tab4_mid, text="Rabia").grid(column=1, row=0, pady=15, padx=10)
-        cb_T4M5 = customtkinter.CTkCheckBox(self.tab4_mid, text="Rabia").grid(column=1, row=1, pady=15, padx=10)
-        entryT2 = customtkinter.CTkEntry(self.tab4_mid, placeholder_text="Otras (especifique)", height=50, width=250).grid(column=0, columnspan=2, row=3, pady=15, padx=10)
+        self.cb_T4M1 = customtkinter.CTkCheckBox(self.tab4_mid, text="Rabia", onvalue="Rabia").grid(column=0, row=0, pady=15, padx=10)
+        self.cb_T4M2 = customtkinter.CTkCheckBox(self.tab4_mid, text="Rabia", onvalue="Rabia").grid(column=0, row=1, pady=15, padx=10)
+        self.cb_T4M3 = customtkinter.CTkCheckBox(self.tab4_mid, text="Rabia", onvalue="Rabia").grid(column=0, row=2, pady=15, padx=10)
+        self.cb_T4M4 = customtkinter.CTkCheckBox(self.tab4_mid, text="Rabia", onvalue="Rabia").grid(column=1, row=0, pady=15, padx=10)
+        self.cb_T4M5 = customtkinter.CTkCheckBox(self.tab4_mid, text="Rabia", onvalue="Rabia").grid(column=1, row=1, pady=15, padx=10)
+        self.entryT2 = customtkinter.CTkEntry(self.tab4_mid, placeholder_text="Otras (especifique)", height=50, width=250).grid(column=0, columnspan=2, row=3, pady=15, padx=10)
 
         # ALERGIAS-----------------------------------------------
 
