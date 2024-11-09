@@ -3,8 +3,13 @@ from PIL import Image, ImageTk
 import customtkinter as ctk
 from registro import RegistroApp
 
+
+
 ###--------------------------------------------Ventana Principal------------------------------------------###
 class main_window(ctk.CTk):
+    
+    def kevin_tonto():
+        pass
 
     def abrir_registro(self):
         app = Toplevel(ventana)
