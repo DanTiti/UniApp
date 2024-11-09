@@ -8,12 +8,6 @@ from registro import RegistroApp
 ###--------------------------------------------Ventana Principal------------------------------------------###
 class main_window(ctk.CTk):
     
-    def puto26():
-        pass
-
-    def daniel_tonto(self):
-        print("pendejo")
-
     def abrir_registro(self):
         app = Toplevel(ventana)
         registro = RegistroApp(app)
