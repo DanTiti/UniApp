@@ -63,7 +63,7 @@ class main_window(ctk.CTk):
 
         self.scrollable_frame.bind(
             "<Configure>",
-            lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+            lambda j: self.canvas.configure(scrollregion=self.canvas.bbox("all"))
         )
 
         self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
@@ -209,7 +209,7 @@ class main_window(ctk.CTk):
         
         #el label del pop out
         self.label_popOut = ctk.CTkLabel(self.popout, text="Estas seguro de que deseas cerrar sesion?", font=("Arial", 20), wraplength=250)
-        self.label_popOut.pack(fill="both", pady = (2, 10), padx="10")
+        self.label_popOut.pack(fill="both", pady = (10, 10), padx="10")
         
         #boton donde si damos 'si' se cierra la sesion, en teoria una vez se cierre te regresa a la pantalla de login
         self.cerrar = ctk.CTkButton(
@@ -220,7 +220,7 @@ class main_window(ctk.CTk):
             corner_radius=10,
             width=150
         )
-        self.cerrar.pack(fill="x" ,padx=(2,10) , side="left")
+        self.cerrar.pack(fill="x" ,padx=(10,10) , side="left")
         
         #este es pa que nos e cierre
         self.no_cerrar = ctk.CTkButton(   

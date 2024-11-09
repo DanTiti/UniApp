@@ -11,7 +11,7 @@ class RegistroApp:
 
     def __init__(self, root):
         self.root = root
-        self.root.geometry("400x600")
+        self.root.geometry("400x600+800+140")
         self.root.resizable(False, False)
 
         pygame.mixer.init()
@@ -24,7 +24,7 @@ class RegistroApp:
         self.current_index = 0
         self.color1 = "#82bce9"
         self.imagenes = ["gato_icon.jpg", "perro_icon.jpg", "nutria_icon.jpg", "hamster_icon.jpg", 
-                         "conejo_icon.jpg", "lagarto_icon.jpg", "tortuga_icon.jpg", "ProfileIcon.png"]
+                        "conejo_icon.jpg", "lagarto_icon.jpg", "tortuga_icon.jpg", "ProfileIcon.png"]
         self.sonidos = ["cat.mp3", "rugido.mp3", "rugido.mp3", "rugido.mp3", 
                         "rugido.mp3", "rugido.mp3", "rugido.mp3", "rugido.mp3"]
         self.profile = "imagenes/ProfileIcon.png"
