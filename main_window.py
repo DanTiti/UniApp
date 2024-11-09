@@ -7,6 +7,9 @@ from registro import RegistroApp
 
 ###--------------------------------------------Ventana Principal------------------------------------------###
 class main_window(ctk.CTk):
+    
+    def puto2():
+        pass
 
     def daniel_tonto(self):
         print("pendejo")
