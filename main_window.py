@@ -3,9 +3,7 @@ from PIL import Image, ImageTk
 import customtkinter as ctk
 from registro import RegistroApp
 
-
-
-###--------------------------------------------Ventana Principal------------------------------------------###
+###--------------------------------------------           Ventana Principal                 ------------------------------------------###
 class main_window(ctk.CTk):
     
     def puto26():
