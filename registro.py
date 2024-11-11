@@ -48,7 +48,6 @@ class RegistroApp:
 
     def GuardarInfo(self):
             base = bd()
-            
             base.AgregarMascota(self.entryName.get(), self.entryPet.get(), self.entryAddress.get(), "prueba", "prueba", "prueba", self.currentImage)
             data = base.ObtenerInfoMascotas()
             print(data)

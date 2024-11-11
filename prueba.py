@@ -2,6 +2,7 @@ from tkinter import *
 from PIL import Image, ImageTk
 import customtkinter as ctk
 from registro import RegistroApp
+from bd import bd
 
 ###--------------------------------------------           Ventana Principal                 ------------------------------------------###
 class main_window(ctk.CTk):
@@ -9,12 +10,27 @@ class main_window(ctk.CTk):
     def abrir_registro(self):
         app = Toplevel(ventana)
         registro = RegistroApp(app)
-        registro.mainloop()  # Asegúrate de que la clase RegistroApp tiene su propio mainloop si es necesario
+        registro.mainloop()  # Asegurate de que la clase RegistroApp tiene su propio mainloop si es necesario
+        
+    def obtener_info(self):
+        base = bd()
+        data = base.Obtener_info_lista()
+        base.Cerrar()
+        return data
+    
+    def update(self):        
+        pass
 
     def __init__(self):
         super().__init__()
         self.title("Selecciona tu Mascota")
         self.geometry("1080x720+400+60")
+        
+        # Configuracion de la disposicion de la ventana, en realidad no esta funcionando esta parte no se porque, en teoria era para poder hacer que la lista de animales abaracara todo el ancho
+        self.grid_rowconfigure(1, weight=1)
+        self.grid_columnconfigure(0, weight=0)
+        self.grid_columnconfigure(1, weight=1)
+        self.grid_columnconfigure(2, weight=1)
 
         # Menu de hamburguesa en la esquina superior izquierda
         self.menu_button = ctk.CTkButton(self, text="☰", command=self.toggle_menu, width=80, fg_color="lightgray", corner_radius=10)
@@ -43,14 +59,14 @@ class main_window(ctk.CTk):
         # una mejora que le agregue a la barra de busqueda para que este centrada y no abarque todo el ancho
         self.search_entry = ctk.CTkEntry(self.search_frame, placeholder_text="Buscar Dueño", width=300)
         self.search_entry.pack(padx=10, pady=5)
+        
 
-        # lista de mascotas en la columna o frame izquierdo
-        self.list_frame = ctk.CTkFrame(self)
-        self.list_frame.grid(row=1, column=1, padx=(20, 0), pady=10, sticky="nsew")
-
-        # canvas para barra desplazadora jsajsja
-        self.canvas = ctk.CTkCanvas(self.list_frame)
-        self.scrollbar = ctk.CTkScrollbar(self.list_frame, orientation="vertical", command=self.canvas.yview)
+        # frame para las mascotas y el canvas
+        self.frame_canvas = ctk.CTkFrame(self, width=300)
+        self.frame_canvas.grid(row=1, column=1, padx=(20, 0), pady=10, sticky="nsew")
+        
+        self.canvas = ctk.CTkCanvas(self.frame_canvas)
+        self.scrollbar = ctk.CTkScrollbar(self.frame_canvas, orientation="vertical", command=self.canvas.yview)
         self.scrollable_frame = ctk.CTkFrame(self.canvas)
 
         self.scrollable_frame.bind(
@@ -63,22 +79,19 @@ class main_window(ctk.CTk):
         self.canvas.pack(side="left", fill="both", expand=True)
         self.scrollbar.pack(side="right", fill="y")
         
-        # agregar las imagenes
-        self.pet_data = [
-            ("imagenes/conejo_icon.jpg", "Nombre dueño\nNombre mascota"),
-            ("imagenes/gato_icon.jpg", "Nombre dueño\nNombre mascota"),
-            ("imagenes/hamster_icon.jpg", "Nombre dueño\nNombre mascota"),
-            ("imagenes/nutria_icon.jpg", "Nombre dueño\nNombre mascota"),
-            ("imagenes/perro_icon.jpg", "Nombre dueño\nNombre mascota"),
-            ("imagenes/tortuga_icon.jpg", "Nombre dueño\nNombre mascota")
-        ]
-
-        # crear botones con las imagenes de las mascotas, no se como ponerle a esta parte perdon
-        self.pet_buttons = []
-        for img_path, text in self.pet_data:
-            image = Image.open(img_path).resize((100, 100))
+        self.lista_mascotas = self.obtener_info()
+        
+        for img_icon, nombre, mascota in self.lista_mascotas:
+            imagen3 = "imagenes/" + img_icon
+            texto = nombre + "\n" + mascota
+            image = Image.open(imagen3).resize((100, 100))
             photo = ImageTk.PhotoImage(image)
-            self.create_pet_item(photo, text)
+            self.create_pet_item(photo, texto)
+        
+
+        
+        
+        
 
         # Columna derecha con imagen y texto (con imagen inicial del perrito)
         self.right_frame = ctk.CTkFrame(self, fg_color="#FFF8E1", width=300, height=400)  # Tamaño fijo
@@ -137,12 +150,6 @@ class main_window(ctk.CTk):
             command=lambda: self.abrir_registro()
         )
         self.register_button.pack(pady=10)
-
-        # Configuracion de la disposicion de la ventana, en realidad no esta funcionando esta parte no se porque, en teoria era para poder hacer que la lista de animales abaracara todo el ancho
-        self.grid_rowconfigure(1, weight=1)
-        self.grid_columnconfigure(0, weight=0)
-        self.grid_columnconfigure(1, weight=1)
-        self.grid_columnconfigure(2, weight=1)
 
     def create_pet_item(self, image, text):
         """Crea un item de mascota en la lista como botón."""
