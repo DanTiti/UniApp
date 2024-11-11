@@ -81,13 +81,6 @@ class main_window(ctk.CTk):
         
         self.lista_mascotas = self.obtener_info()
         
-        for img_icon, nombre, mascota in self.lista_mascotas:
-            imagen3 = "imagenes/" + img_icon
-            texto = nombre + "\n" + mascota
-            image = Image.open(imagen3).resize((100, 100))
-            photo = ImageTk.PhotoImage(image)
-            self.create_pet_item(photo, texto)
-        
 
         
         
