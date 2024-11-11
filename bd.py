@@ -73,6 +73,19 @@ class bd:
             return data
         except:
             pass
+        
+    def Obtener_info_lista(self):
+        try:
+            cursor = self.conector.cursor()
+            cursor.execute("""
+                SELECT img, nombre, mascota FROM mascotas;
+            """)
+            data = cursor.fetchall()
+            self.conector.commit()
+            print("Se ha obtenido la informacion correctamente")
+            return data
+        except:
+            pass
 
     def ObtenerInfo(self, id):
         try:
@@ -103,6 +116,4 @@ class bd:
         if self.conector:
             self.conector.close()
             print("La conexion se ha cerrado")
-    
-            
 
