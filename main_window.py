@@ -178,7 +178,6 @@ class main_window(ctk.CTk):
 
     def show_full_info(self):
         """Mostrar información completa de la mascota seleccionada.""" 
-        open_info_window()  # Llama a la ventana de información completa
 
     def toggle_menu(self):
         """Alternar visibilidad del menú desplegable.""" 
