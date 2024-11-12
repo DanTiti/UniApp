@@ -41,7 +41,7 @@ class RegistroApp:
     def Confirmacion(self):
         confirmacion = messagebox.askyesno("Guardar cambios", "Estas seguro que la informacion es correcta")
         if confirmacion:
-            self.GuardarInfo()
+            self.GuardarInfo()     
             self.root.destroy()
         else:
             self.current_index -= 1

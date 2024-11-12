@@ -3,23 +3,70 @@ from PIL import Image, ImageTk
 import customtkinter as ctk
 from registro import RegistroApp
 from bd import bd
-
+import traceback
+import qrcode
 ###--------------------------------------------           Ventana Principal                 ------------------------------------------###
 class main_window(ctk.CTk):
+    #generador de qr
+    """ qr = qrcode.QRCode(version=1, box_size=10, border=5)
+    qr.add_data("hola")
+    qr.make(fit=True)
+    img = qr.make_image(fill = "black", back_color = "white")
+    img.save("qrtelecapp.png") """
+    
+    base = bd()
+    data = base.Obtener_info_lista()
+    base.Cerrar()
+
+    tam = len(data)
     
     def abrir_registro(self):
         app = Toplevel(ventana)
         registro = RegistroApp(app)
-        registro.mainloop()  # Asegurate de que la clase RegistroApp tiene su propio mainloop si es necesario
+        registro.mainloop()
+        self.update()
         
+    def obtener_info_completa(self):
+        base = bd()
+        data = base.obtener_info_derecha()
+        base.Cerrar()
+        return data
+        
+    def obtener_info_lista(self):
+        base = bd()
+        data = base.Obtener_info_lista()
+        base.Cerrar()
+        return data
+    
     def obtener_info(self):
         base = bd()
         data = base.Obtener_info_lista()
         base.Cerrar()
         return data
     
-    def update(self):        
-        pass
+    def updateOne(self):
+        print("update entrando")
+        self.lista_mascotas = self.obtener_info()
+        tam2 = len(self.lista_mascotas)
+        if(int(self.tam) < int(tam2)):
+            print("refrescando vista")
+            new = self.lista_mascotas[-1]
+            imagen3 = "imagenes/" + new[1]
+            texto = new[2] + "\n" + new[3]
+            image = Image.open(imagen3).resize((100, 100))
+            photo = ImageTk.PhotoImage(image)
+            self.create_pet_item(photo, texto, new[0])
+            self.tam += 1
+        else:
+            print(self.tam, tam2)
+        
+    def update(self):    
+        for pet_id, img_icon, nombre, mascota in self.lista_mascotas:
+            imagen3 = "imagenes/" + img_icon
+            texto = nombre + "\n" + mascota
+            image = Image.open(imagen3).resize((100, 100))
+            photo = ImageTk.PhotoImage(image)
+            self.create_pet_item(photo, texto, pet_id)
 
     def __init__(self):
         super().__init__()
@@ -35,6 +82,42 @@ class main_window(ctk.CTk):
         # Menu de hamburguesa en la esquina superior izquierda
         self.menu_button = ctk.CTkButton(self, text="☰", command=self.toggle_menu, width=80, fg_color="lightgray", corner_radius=10)
         self.menu_button.grid(row=0, column=0, padx=(20, 5), pady=10, sticky="nw")
+        
+        # Barra de color azul en la parte inferior
+        self.register_frame = ctk.CTkFrame(self, fg_color="lightblue")
+        self.register_frame.grid(row=2, column=0, columnspan=3, pady=10, sticky="nsew")
+
+        # Configurar el grid del frame para centrar el contenido
+        self.register_frame.grid_columnconfigure(0, weight=1)
+
+        # Frame que contendrá los botones, centrado en la barra azul
+        button_frame = ctk.CTkFrame(self.register_frame, fg_color="lightblue")
+        button_frame.grid(row=0, column=0, pady=10)
+
+        # Botón "Registrar"
+        self.register_button = ctk.CTkButton(
+            button_frame,
+            text="  Registrar ",
+            width=70,
+            height=50,
+            fg_color="orange",
+            corner_radius=25,
+            command=lambda: self.abrir_registro()
+        )
+        self.register_button.grid(row=0, column=0, padx=5)  # Pequeño espacio a la izquierda y derecha
+
+        # Botón "Refrescar"
+        self.boton_refresh = ctk.CTkButton(
+            button_frame,
+            fg_color="orange",
+            text="Refrescar",
+            width=40,
+            height=50,
+            corner_radius=25,
+            command=lambda: self.updateOne()
+        )
+        self.boton_refresh.grid(row=0, column=1, padx=5)  # Pequeño espacio a la izquierda y derecha
+
 
         # Frame del menu despegable de hamburguesa
         self.menu_frame = ctk.CTkFrame(self, fg_color="white")
@@ -54,41 +137,33 @@ class main_window(ctk.CTk):
 
         # Barra de busqueda en la parte superior generalmente en el centro(la mejorare despues)
         self.search_frame = ctk.CTkFrame(self, fg_color="white")
-        self.search_frame.grid(row=0, column=1, columnspan=2, padx=20, pady=10, sticky="ew")
+        self.search_frame.grid(row=0, column=1, columnspan=2, padx=20, pady=10, sticky="nsew")
 
         # una mejora que le agregue a la barra de busqueda para que este centrada y no abarque todo el ancho
         self.search_entry = ctk.CTkEntry(self.search_frame, placeholder_text="Buscar Dueño", width=300)
         self.search_entry.pack(padx=10, pady=5)
         
+        #frame mascotas
+        self.mascotas_frame = ctk.CTkFrame(self, width=300)
+        self.mascotas_frame.grid(row = 1, column = 1, padx=0, pady = 0 ,sticky ="nsew")
+        
+        self.lista_mascotas = self.obtener_info_lista()
 
-        # frame para las mascotas y el canvas
-        self.frame_canvas = ctk.CTkFrame(self, width=300)
-        self.frame_canvas.grid(row=1, column=1, padx=(20, 0), pady=10, sticky="nsew")
+        self.update()
         
-        self.canvas = ctk.CTkCanvas(self.frame_canvas)
-        self.scrollbar = ctk.CTkScrollbar(self.frame_canvas, orientation="vertical", command=self.canvas.yview)
-        self.scrollable_frame = ctk.CTkFrame(self.canvas)
+        # frame de la columna derecha con informacion y configuraciones
+        self.right_frame = ctk.CTkFrame(self, fg_color="#FFF8E1", width=300)
+        self.right_frame.grid(row=1, column=2, padx=10, pady=0, sticky="nsew")
+        self.right_frame.grid_propagate(False)
 
-        self.scrollable_frame.bind(
-            "<Configure>",
-            lambda j: self.canvas.configure(scrollregion=self.canvas.bbox("all"))
-        )
-
-        self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
-        self.canvas.configure(yscrollcommand=self.scrollbar.set)
-        self.canvas.pack(side="left", fill="both", expand=True)
-        self.scrollbar.pack(side="right", fill="y")
+        # Contenedor de imagen y texto, sin modificar tamaño
+        self.content_frame = ctk.CTkFrame(self.right_frame, width=300, height=400)
+        self.content_frame.pack_propagate(False)
+        self.content_frame.pack(expand=True)
         
-        self.lista_mascotas = self.obtener_info()
-        
-
-        
-        
-        
-
         # Columna derecha con imagen y texto (con imagen inicial del perrito)
-        self.right_frame = ctk.CTkFrame(self, fg_color="#FFF8E1", width=300, height=400)  # Tamaño fijo
-        self.right_frame.grid(row=1, column=2, padx=20, pady=10, sticky="nsew")
+        self.right_frame = ctk.CTkFrame(self, fg_color="#FFF8E1", width=300)  # Tamaño fijo
+        self.right_frame.grid(row=1, column=2, padx=0, pady=0, sticky="nsew")
         self.right_frame.grid_propagate(False)  # Evitar que el frame cambie de tamaño
 
         # Contenedor de imagen y texto, sin modificar tamaño
@@ -108,8 +183,8 @@ class main_window(ctk.CTk):
         self.selected_image_label.pack(pady=15)
         
         # Etiquetas de informacion
-        self.name_label = ctk.CTkLabel(self.content_frame, text="", font=("Arial", 20), anchor='center')
-        self.name_label.pack(pady=(0, 5))
+        self.nombre_mascota = ctk.CTkLabel(self.content_frame, text="", font=("Arial", 20), anchor='center')
+        self.nombre_mascota.pack(pady=(0, 5))
 
         self.id_label = ctk.CTkLabel(self.content_frame, text="", font=("Arial", 20), anchor='center')
         self.id_label.pack(pady=(0, 5))
@@ -127,27 +202,22 @@ class main_window(ctk.CTk):
         # Boton "Ver informacion completa"
         self.full_info_button = ctk.CTkButton(self.content_frame, text="Ver información completa", command=self.show_full_info)
         self.full_info_button.pack(pady=(10, 10))
+        
+        self.lista_info_completa = self.obtener_info_completa()
+        
+    def on_frame_configure(self, event):
+        self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+        
+    def on_canvas_resize(self, event):
+        canvas_width = event.width
+        self.canvas.itemconfig(self.frame_window, width=canvas_width)
 
-        # Boton de registro en la parte inferior
-        self.register_frame = ctk.CTkFrame(self, fg_color="lightblue")
-        self.register_frame.grid(row=2, column=0, columnspan=3, pady=10, sticky="ew")
+    def create_pet_item(self, image, text, pet_id):
+        pet_frame = ctk.CTkFrame(self.mascotas_frame, fg_color=None)
+        pet_frame.grid(row=self.mascotas_frame.grid_size()[1], column=0, padx=5, pady=15, sticky="ew")
 
-        # Boton redondo
-        self.register_button = ctk.CTkButton(
-            self.register_frame,
-            text="Registrar",
-            width=50,
-            height=50,
-            fg_color="orange",
-            corner_radius=25,
-            command=lambda: self.abrir_registro()
-        )
-        self.register_button.pack(pady=10)
-
-    def create_pet_item(self, image, text):
-        """Crea un item de mascota en la lista como botón."""
-        pet_frame = ctk.CTkFrame(self.scrollable_frame, fg_color=None)
-        pet_frame.pack(padx=5, pady=15)
+        # Configurar el ancho de la columna
+        self.mascotas_frame.grid_columnconfigure(0, weight=1)
 
         # Crear un boton con la imagen de la mascota
         pet_button = ctk.CTkButton(
@@ -157,24 +227,29 @@ class main_window(ctk.CTk):
             width=100,
             height=100,
             fg_color=None,
-            command=lambda img=image, txt=text: self.display_pet_info(img, txt)
+            command=lambda img=image, txt=text, id=pet_id: self.display_pet_info(img, id)
         )
         pet_button.pack(side="left", padx=5)
-
-        # Etiqueta con el nombre de la mascota y el dueño
         pet_label = ctk.CTkLabel(pet_frame, text=text, font=("Arial", 20), fg_color=None)
         pet_label.pack(side="left", padx=10)
-
-    def display_pet_info(self, image, text):
-        """Muestra la información de la mascota seleccionada en la columna derecha."""
+        
+    #muestra la info de la parte derecha
+    def display_pet_info(self, image, pet_id):
         self.selected_image_label.configure(image=image)
         self.selected_image_label.image = image
-
-        # Mostrar la información en la columna derecha
-        self.name_label.configure(text="Nombre de Mascota")
-        self.id_label.configure(text="MO123")
-        self.owner_label.configure(text="Dueño: \nKevin Alberto Medina Cardenas\n")
-        self.contact_label.configure(text="Contacto: \nexample@gmail.com")
+        try:
+            self.lista = self.obtener_info_completa()
+            for tupla in self.lista:
+                id, nombre, mascota, contacto = tupla
+                if id == pet_id:
+                    self.nombre_mascota.configure(text=mascota)
+                    self.id_label.configure(text=id)
+                    self.owner_label.configure(text="Dueño: \n" + nombre + "\n")
+                    self.contact_label.configure(text="Contacto: \n" + contacto)
+                    break  # Terminar el bucle una vez se haya encontrado la mascota
+        except Exception as e:
+            print("Hubo un error: ", str(e))
+            print(traceback.format_exc())
 
     def show_full_info(self):
         """Mostrar información completa de la mascota seleccionada.""" 
