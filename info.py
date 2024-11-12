@@ -1,23 +1,31 @@
 from tkinter import *
 import customtkinter
 from PIL import Image, ImageTk
-import pygame
 from bd import bd
+import qrcode
 
 class Info():
 
-    def __init__(self, root):
+    def __init__(self, root, id):
         self.root = root
         self.root.title("Informacion Mascotas")
         self.root.geometry("1080x720+400+60")
         self.root.resizable(False, False)
+        self.id = id
 
         self.Ventana()
 
-    def Info(self):
+    def GenerarQR(self):
+        #generador de qr
+        qr = qrcode.QRCode(version=1, box_size=10, border=5)
+        qr.add_data("https://www.youtube.com/watch?v=GBIIQ0kP15E")
+        qr.make(fit=True)
+        img = qr.make_image(fill = "black", back_color = "white")
+        img.save("qr.png")
+
+    def InfoMascota(self):
         base = bd()
-        data = base.ObtenerInfoMascotas()
-        info = data[0]
+        info = base.ObtenerInfo(self.id)
         print(info)
         base.Cerrar()
         self.labelPet.config(text=info[2])
@@ -29,13 +37,14 @@ class Info():
         
 
     def Ventana(self):
+        print("EL ID ES:", self.id)
         self.root.columnconfigure(0, weight=1)
         self.root.rowconfigure(0, weight=1)
         self.root.columnconfigure(1, weight=1)
 
-        frameIzquierdo = Frame(root, bg="#A8EAF9", relief="groove", border=2, borderwidth=2)
+        frameIzquierdo = Frame(self.root, bg="#A8EAF9", relief="groove", border=2, borderwidth=2)
         frameIzquierdo.grid(column=0, row=0, sticky="nsew")
-        frameDerecho = Frame(root, relief="groove", border=2, borderwidth=2)
+        frameDerecho = Frame(self.root, relief="groove", border=2, borderwidth=2)
         frameDerecho.grid(column=1, row=0, sticky="nsew")
 
         #---------------------lado izquierdo------------------------------
@@ -131,11 +140,10 @@ class Info():
 
         labelGenerar = Label(labelQR, text="Presiona para generar tu Codigo QR        -----> ", font=("Verdana",10, "bold"))
         labelGenerar.grid(column=0, row=0)
-        btnQR = Button(labelQR, image=photoQR, width=130, height=130, command=lambda: self.Info())
+        btnQR = Button(labelQR, image=photoQR, width=130, height=130, command=lambda: self.GenerarQR())
         btnQR.grid(column=1, row=0)
 
-
-
+        self.InfoMascota()
 
 if __name__ == "__main__":
     root = Tk()

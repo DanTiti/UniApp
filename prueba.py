@@ -4,22 +4,17 @@ import customtkinter as ctk
 from registro import RegistroApp
 from bd import bd
 import traceback
-import qrcode
+from info import Info
+
 ###--------------------------------------------           Ventana Principal                 ------------------------------------------###
 class main_window(ctk.CTk):
-    #generador de qr
-    """ qr = qrcode.QRCode(version=1, box_size=10, border=5)
-    qr.add_data("hola")
-    qr.make(fit=True)
-    img = qr.make_image(fill = "black", back_color = "white")
-    img.save("qrtelecapp.png") """
     
     base = bd()
     data = base.Obtener_info_lista()
     base.Cerrar()
 
     tam = len(data)
-    
+
     def abrir_registro(self):
         app = Toplevel(ventana)
         registro = RegistroApp(app)
@@ -70,6 +65,7 @@ class main_window(ctk.CTk):
 
     def __init__(self):
         super().__init__()
+        self.id = 0
         self.title("Selecciona tu Mascota")
         self.geometry("1080x720+400+60")
         
@@ -199,8 +195,8 @@ class main_window(ctk.CTk):
         self.contact_label = ctk.CTkLabel(self.info_frame, text="", font=("Arial", 16), anchor='w')
         self.contact_label.pack(pady=(5, 10))
 
-        # Boton "Ver informacion completa"
-        self.full_info_button = ctk.CTkButton(self.content_frame, text="Ver información completa", command=self.show_full_info)
+        # Boton "Ver informacion completa"-----------------------------------------------------------------------------------------------------------
+        self.full_info_button = ctk.CTkButton(self.content_frame, text="Ver información completa", command=lambda: self.show_full_info())
         self.full_info_button.pack(pady=(10, 10))
         
         self.lista_info_completa = self.obtener_info_completa()
@@ -241,6 +237,7 @@ class main_window(ctk.CTk):
             self.lista = self.obtener_info_completa()
             for tupla in self.lista:
                 id, nombre, mascota, contacto = tupla
+                self.id = id
                 if id == pet_id:
                     self.nombre_mascota.configure(text=mascota)
                     self.id_label.configure(text=id)
@@ -252,7 +249,10 @@ class main_window(ctk.CTk):
             print(traceback.format_exc())
 
     def show_full_info(self):
-        """Mostrar información completa de la mascota seleccionada.""" 
+        ven = Toplevel(ventana)
+        app = Info(ven, self.id)
+        app.mainloop()
+        
 
     def toggle_menu(self):
         """Alternar visibilidad del menú desplegable.""" 

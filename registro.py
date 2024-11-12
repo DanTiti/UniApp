@@ -43,7 +43,7 @@ class RegistroApp:
     def Confirmacion(self):
         confirmacion = messagebox.askyesno("Guardar cambios", "Estas seguro que la informacion es correcta")
         if confirmacion:
-            self.GuardarInfo()
+            self.GuardarInfo()     
             self.root.destroy()
         else:
             self.current_index -= 1
@@ -54,7 +54,6 @@ class RegistroApp:
                 base.AgregarMascota(self.entryName.get(), self.entryPet.get(), self.entryAddress.get(), self.entryV.get(), self.entryA.get(), self.entryP.get(), self.currentImage)
             else:
                 base.AgregarMascota(self.entryName.get(), self.entryPet.get(), self.entryAddress.get(), self.entryV.get(), self.entryA.get(), self.entryP.get(), "ProfileIcon.png")
-
             data = base.ObtenerInfoMascotas()
             print(data)
             base.Cerrar()
