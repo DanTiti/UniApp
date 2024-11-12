@@ -80,8 +80,23 @@ class bd:
             cursor.execute("""
                 SELECT * FROM mascotas WHERE id = ?;
             """, id)
+            data = cursor.fetchall()
             self.conector.commit()
             print("Se ha encontrado correctamente")
+            return data
+        except:
+            pass
+
+    def ObtenerInfoByName(self, name):
+        try:
+            cursor = self.conector.cursor()
+            cursor.execute("""
+                SELECT * FROM mascotas WHERE mascota = ?;
+            """, name)
+            data = cursor.fetchall()
+            self.conector.commit()
+            print("Se ha encontrado correctamente")
+            return data
         except:
             pass
 
