@@ -74,11 +74,12 @@ class bd:
         except:
             pass
         
-    def Obtener_info_lista(self):
+        
+    def obtener_info_derecha(self):
         try:
             cursor = self.conector.cursor()
             cursor.execute("""
-                SELECT img, nombre, mascota FROM mascotas;
+                SELECT id, nombre, mascota, contacto FROM mascotas;
             """)
             data = cursor.fetchall()
             self.conector.commit()
@@ -86,6 +87,20 @@ class bd:
             return data
         except:
             pass
+        
+    def Obtener_info_lista(self):
+        try:
+            cursor = self.conector.cursor()
+            cursor.execute("""
+                SELECT id, img, nombre, mascota FROM mascotas;
+            """)
+            data = cursor.fetchall()
+            self.conector.commit()
+            print("Se ha obtenido la informacion correctamente")
+            return data
+        except:
+            pass
+        
 
     def ObtenerInfo(self, id):
         try:
