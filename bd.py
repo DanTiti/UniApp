@@ -92,9 +92,28 @@ class bd:
             cursor = self.conector.cursor()
             cursor.execute("""
                 SELECT * FROM mascotas WHERE id = ?;
-            """, id)
+            """, (id,))  # Pasa 'id' como una tupla de un solo elemento
+            data = cursor.fetchone()  # Asigna el resultado de la consulta a 'data'
+            if data:
+                print("Se ha encontrado correctamente")
+                return data
+            else:
+                print("No se encontró información para el ID proporcionado.")
+                return None
+        except Exception as e:
+            print(f"Error al obtener la información: {e}")
+            return None
+
+    def ObtenerInfoByName(self, name):
+        try:
+            cursor = self.conector.cursor()
+            cursor.execute("""
+                SELECT * FROM mascotas WHERE mascota = ?;
+            """, name)
+            data = cursor.fetchall()
             self.conector.commit()
             print("Se ha encontrado correctamente")
+            return data
         except:
             pass
 

@@ -26,10 +26,12 @@ class RegistroApp:
         self.color1 = "#82bce9"
         self.imagenes = ["gato_icon.jpg", "perro_icon.jpg", "nutria_icon.jpg", "hamster_icon.jpg", 
                         "conejo_icon.jpg", "lagarto_icon.jpg", "tortuga_icon.jpg", "ProfileIcon.png"]
-        self.sonidos = ["cat.mp3", "rugido.mp3", "rugido.mp3", "rugido.mp3", 
-                        "rugido.mp3", "rugido.mp3", "rugido.mp3", "rugido.mp3"]
+        
         self.profile = "imagenes/ProfileIcon.png"
         self.currentImage = ""
+        self.entryV = StringVar()
+        self.entryA = StringVar()
+        self.entryP = StringVar()
 
         self.Register()
 
@@ -175,26 +177,17 @@ class RegistroApp:
         self.tab4_mid.columnconfigure(0, weight=1)
         self.tab4_mid.columnconfigure(1, weight=1)
 
-        self.cb_T2M1 = customtkinter.CTkCheckBox(self.tab2_mid, text="Rabia", onvalue="Rabia").grid(column=0, row=0, pady=15, padx=10)
-        self.cb_T2M2 = customtkinter.CTkCheckBox(self.tab2_mid, text="Rabia", onvalue="Rabia").grid(column=0, row=1, pady=15, padx=10)
-        self.cb_T2M3 = customtkinter.CTkCheckBox(self.tab2_mid, text="Rabia", onvalue="Rabia").grid(column=0, row=2, pady=15, padx=10)
-        self.cb_T2M4 = customtkinter.CTkCheckBox(self.tab2_mid, text="Rabia", onvalue="Rabia").grid(column=1, row=0, pady=15, padx=10)
-        self.cb_T2M5 = customtkinter.CTkCheckBox(self.tab2_mid, text="Rabia", onvalue="Rabia").grid(column=1, row=1, pady=15, padx=10)
-        self.entryT2 = customtkinter.CTkEntry(self.tab2_mid, placeholder_text="Otras (especifique)", height=50, width=250).grid(column=0, columnspan=2, row=3, pady=15, padx=10)
+        lbVacunas = Label(self.tab2_mid, text="Introduzca las vacunas que se conoce han sido adminisitradas a la mascota", justify="center", wraplength=250, font=("Verdana",14) )
+        lbVacunas.grid(column=0, columnspan=2, row=0, pady=15, padx=10)
+        self.entryT2 = customtkinter.CTkEntry(self.tab2_mid, placeholder_text="Vacunas", height=70, width=250, textvariable=self.entryV).grid(column=0, columnspan=2, row=1, pady=15, padx=10)
 
-        self.cb_T3M1 = customtkinter.CTkCheckBox(self.tab3_mid, text="Rabia", onvalue="Rabia").grid(column=0, row=0, pady=15, padx=10)
-        self.cb_T3M2 = customtkinter.CTkCheckBox(self.tab3_mid, text="Rabia", onvalue="Rabia").grid(column=0, row=1, pady=15, padx=10)
-        self.cb_T3M3 = customtkinter.CTkCheckBox(self.tab3_mid, text="Rabia", onvalue="Rabia").grid(column=0, row=2, pady=15, padx=10)
-        self.cb_T3M4 = customtkinter.CTkCheckBox(self.tab3_mid, text="Rabia", onvalue="Rabia").grid(column=1, row=0, pady=15, padx=10)
-        self.cb_T3M5 = customtkinter.CTkCheckBox(self.tab3_mid, text="Rabia", onvalue="Rabia").grid(column=1, row=1, pady=15, padx=10)
-        self.entryT2 = customtkinter.CTkEntry(self.tab3_mid, placeholder_text="Otras (especifique)", height=50, width=250).grid(column=0, columnspan=2, row=3, pady=15, padx=10)
+        lbAlergias = Label(self.tab3_mid, text="En caso de tenerlas, introduzca las alergias que se conoce tiene la mascota", justify="center", wraplength=250, font=("Verdana",14))
+        lbAlergias.grid(column=0, columnspan=2, row=0, pady=15, padx=10)
+        self.entryT3 = customtkinter.CTkEntry(self.tab3_mid, placeholder_text="Opcional", height=70, width=250, textvariable=self.entryA).grid(column=0, columnspan=2, row=1, pady=15, padx=10)
 
-        self.cb_T4M1 = customtkinter.CTkCheckBox(self.tab4_mid, text="Rabia", onvalue="Rabia").grid(column=0, row=0, pady=15, padx=10)
-        self.cb_T4M2 = customtkinter.CTkCheckBox(self.tab4_mid, text="Rabia", onvalue="Rabia").grid(column=0, row=1, pady=15, padx=10)
-        self.cb_T4M3 = customtkinter.CTkCheckBox(self.tab4_mid, text="Rabia", onvalue="Rabia").grid(column=0, row=2, pady=15, padx=10)
-        self.cb_T4M4 = customtkinter.CTkCheckBox(self.tab4_mid, text="Rabia", onvalue="Rabia").grid(column=1, row=0, pady=15, padx=10)
-        self.cb_T4M5 = customtkinter.CTkCheckBox(self.tab4_mid, text="Rabia", onvalue="Rabia").grid(column=1, row=1, pady=15, padx=10)
-        self.entryT2 = customtkinter.CTkEntry(self.tab4_mid, placeholder_text="Otras (especifique)", height=50, width=250).grid(column=0, columnspan=2, row=3, pady=15, padx=10)
+        lbPadecimientos = Label(self.tab4_mid, text="En caso de tener, introduzca los padecimientos que se conoce tiene la mascota", justify="center", wraplength=250, font=("Verdana",14) )
+        lbPadecimientos.grid(column=0, columnspan=2, row=0, pady=15, padx=10)
+        self.entryT4 = customtkinter.CTkEntry(self.tab4_mid, placeholder_text="Otras (especifique)", height=70, width=250, textvariable=self.entryP).grid(column=0, columnspan=2, row=1, pady=15, padx=10)
 
         # ALERGIAS-----------------------------------------------
 
@@ -298,9 +291,9 @@ class RegistroApp:
             image_icon = image_icon.resize((80, 80))
             icon_hamster = ImageTk.PhotoImage(image_icon)
 
-            image_icon = Image.open("imagenes/tortuga_icon.jpg")
+            image_icon = Image.open("imagenes/cancel.png")
             image_icon = image_icon.resize((80, 80))
-            icon_tortuga = ImageTk.PhotoImage(image_icon) 
+            icon_noseleccion = ImageTk.PhotoImage(image_icon) 
 
             btn1 = customtkinter.CTkButton(frameImagenes, image=icon_gato, width=80, height=80, text="", command=lambda: CambiarPerfil(0, selector, LabelImageProfile)).grid(column=0, row=0)
             btn2 = customtkinter.CTkButton(frameImagenes, image=icon_perro, width=80, height=80, text="", command=lambda: CambiarPerfil(1, selector, LabelImageProfile)).grid(column=1, row=0, padx=10, pady=10)
@@ -309,9 +302,9 @@ class RegistroApp:
             btn5 = customtkinter.CTkButton(frameImagenes, image=icon_conejo, width=80, height=80, text="", command=lambda: CambiarPerfil(4, selector, LabelImageProfile)).grid(column=1, row=1, padx=10, pady=10)
             btn6 = customtkinter.CTkButton(frameImagenes, image=icon_iguana, width=80, height=80, text="", command=lambda: CambiarPerfil(5, selector, LabelImageProfile)).grid(column=2, row=1, padx=10, pady=10)
             btn7 = customtkinter.CTkButton(frameImagenes, image=icon_tortuga, width=80, height=80, text="", command=lambda: CambiarPerfil(6, selector, LabelImageProfile)).grid(column=0, row=2, padx=10, pady=10)
-            btn7 = customtkinter.CTkButton(frameImagenes, image=icon_tortuga, width=80, height=80, text="", command=lambda: CambiarPerfil(7, selector, LabelImageProfile)).grid(column=1, row=2, padx=10, pady=10)
+            btn7 = customtkinter.CTkButton(frameImagenes, image=icon_noseleccion, width=80, height=80, text="", command=lambda: CambiarPerfil(7, selector, LabelImageProfile)).grid(column=1, row=2, padx=10, pady=10)
 
-if __name__ == "__main__":()
+if __name__ == "__main__":
     root = Tk()
     app = RegistroApp(root)
-    root.mainloop()        
+    root.mainloop()
