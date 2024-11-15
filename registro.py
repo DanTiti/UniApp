@@ -6,6 +6,7 @@ import customtkinter
 from PIL import Image, ImageTk
 import pygame
 from bd import bd
+from prueba import main_window
 
 class RegistroApp:
 
@@ -42,13 +43,17 @@ class RegistroApp:
         confirmacion = messagebox.askyesno("Guardar cambios", "Estas seguro que la informacion es correcta")
         if confirmacion:
             self.GuardarInfo()
+            
+            self.prueba2 = main_window()
+            
+            self.prueba2.update()
+            
             self.root.destroy()
         else:
             self.current_index -= 1
 
     def GuardarInfo(self):
             base = bd()
-            
             base.AgregarMascota(self.entryName.get(), self.entryPet.get(), self.entryAddress.get(), "prueba", "prueba", "prueba", self.currentImage)
             data = base.ObtenerInfoMascotas()
             print(data)
@@ -306,7 +311,7 @@ class RegistroApp:
             btn7 = customtkinter.CTkButton(frameImagenes, image=icon_tortuga, width=80, height=80, text="", command=lambda: CambiarPerfil(6, selector, LabelImageProfile)).grid(column=0, row=2, padx=10, pady=10)
             btn7 = customtkinter.CTkButton(frameImagenes, image=icon_tortuga, width=80, height=80, text="", command=lambda: CambiarPerfil(7, selector, LabelImageProfile)).grid(column=1, row=2, padx=10, pady=10)
 
-if __name__ == "__main__":
+if __name__ == "__main__":()
     root = Tk()
     app = RegistroApp(root)
     root.mainloop()        
