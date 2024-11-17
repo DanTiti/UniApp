@@ -7,6 +7,10 @@ import traceback
 from info import Info
 
 ###--------------------------------------------           Ventana Principal                 ------------------------------------------###
+
+def danielborrame():
+    pass
+
 class main_window(ctk.CTk):
     
     base = bd()
